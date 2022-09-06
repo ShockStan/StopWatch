@@ -1,0 +1,132 @@
+import java.awt.event.*;
+import java.awt.*;
+import javax.swing.*;
+
+public class StopWatch implements ActionListener {
+	
+	JFrame frame = new JFrame();
+	JLabel timelabel = new JLabel();
+	JLabel lap_entry = new JLabel();
+	JButton startbutton = new JButton();
+	JButton resetbutton = new JButton();
+	JButton lap = new JButton();
+	int time = 0;
+	int sec = 0,min = 0,hr=0;
+	String hours = String.format("%02d", hr);
+	String minutes = String.format("%02d", min);
+	String seconds = String.format("%02d", sec);
+
+	boolean started = false;
+	Timer timer = new Timer(1000, new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			time+=1000;
+			hr = time/3600000;
+			min=(time/60000)%60;
+			sec = (time/1000)%60;
+				
+			hours = String.format("%02d", hr);
+			minutes = String.format("%02d", min);
+			seconds = String.format("%02d", sec);
+			timelabel.setText(hours+":"+minutes+":"+seconds);
+			
+		}});
+			
+	StopWatch(){
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("STOPWATCH");
+		frame.setSize(450,450);
+		frame.getContentPane().setBackground(new Color(10,140,247));
+		frame.setLayout(null);
+		frame.setLocationRelativeTo(frame);
+		
+		ImageIcon image = new ImageIcon(image source);
+		frame.setIconImage(image.getImage());
+		
+		timelabel.setBounds(100,100,300,100);
+		timelabel.setHorizontalAlignment(JTextField.CENTER);
+		timelabel.setText(hours+":"+minutes+":"+seconds);
+		timelabel.setFont(new Font("Ink Free",Font.PLAIN,30));
+		timelabel.setBackground(Color.magenta);
+		timelabel.setOpaque(true);
+		timelabel.setBorder(BorderFactory.createEtchedBorder(1));
+		
+		lap_entry.setBounds(100,250,300,100);
+		lap_entry.setFont(new Font("Ink Free",Font.PLAIN,30));
+		lap_entry.setOpaque(true);
+		lap_entry.setBackground(Color.CYAN);
+		
+		
+		startbutton.setText("Start");
+		startbutton.setBounds(100, 200, 100, 50);
+		startbutton.setFocusable(false);
+		startbutton.addActionListener(this);
+		
+		lap.setText("Lap");
+		lap.setBounds(200, 200, 100, 50);
+		lap.setFocusable(false);
+		lap.addActionListener(this);
+				
+		resetbutton.setText("Reset");
+		resetbutton.setBounds(300, 200, 100, 50);
+		resetbutton.setFocusable(false);
+		resetbutton.addActionListener(this);
+		
+		frame.add(timelabel);
+		frame.add(startbutton);
+		frame.add(resetbutton);
+		frame.add(lap_entry);
+		frame.add(lap);
+		frame.setVisible(true);		
+	}
+@Override
+public void actionPerformed(ActionEvent e) {
+	
+	if(e.getSource()==startbutton) {
+		if(!started) {
+			start();
+		startbutton.setText("Stop");
+		started = true;
+	}
+		else {
+			started=false;
+			startbutton.setText("Start");
+			stop();
+			
+		}
+	}
+	if(e.getSource()==resetbutton) {
+		started = false;
+		startbutton.setText("Start");
+		reset();
+	}
+	if(e.getSource()==lap) {
+		lap();
+		
+	}
+}
+
+void start() {
+	timer.start();
+}
+void stop() {
+	timer.stop();
+}
+void reset(){
+	timer.stop();
+	time = 0;
+	sec=0;
+	hr=0;
+	min=0;
+
+	hours = String.format("%02d", hr);
+	minutes = String.format("%02d", min);
+	seconds = String.format("%02d", sec);
+
+	timelabel.setText(hours+":"+minutes+":"+seconds);	
+}
+void lap() {
+	lap_entry.setText(hours+":"+minutes+":"+seconds);
+}
+}
